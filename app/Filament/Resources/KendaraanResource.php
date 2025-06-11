@@ -19,12 +19,26 @@ class KendaraanResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getModelLabel(): string
+    {
+        return 'Kendaraan';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Kendaraan';
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Kendaraan';
+    }
+
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                //
-            ]);
+        return $form->schema([
+            //
+        ]);
     }
 
     public static function table(Table $table): Table

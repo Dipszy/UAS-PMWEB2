@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ParkirResource\Pages;
 use App\Filament\Resources\ParkirResource\RelationManagers;
-use App\Models\Parkir;
+use App\Models\AreaParkir;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ParkirResource extends Resource
 {
-    protected static ?string $model = Parkir::class;
+    protected static ?string $model = AreaParkir::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
