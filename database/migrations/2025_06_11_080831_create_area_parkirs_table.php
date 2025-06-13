@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('areaparkirs', function (Blueprint $table) {
             $table->id();
+            $table->string('nama', 30);
+            $table->integer('kapasitas');
+            $table->string('keterangan', 100)->nullable();
+            $table->unsignedBigInteger('kampus_id');
+            $table->foreign('kampus_id')->references('id')->on('kampuses')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

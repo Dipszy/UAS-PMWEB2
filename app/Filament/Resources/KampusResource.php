@@ -17,13 +17,47 @@ class KampusResource extends Resource
 {
     protected static ?string $model = Kampus::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-library';
+
+    public static function getModelLabel(): string
+    {
+        return 'Kampus';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Kampus';
+    }
+
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Kampus';
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('nama')
+                    ->label('Nama Kampus')
+                    ->maxLength(20)
+                    ->required(),
+
+                Forms\Components\TextInput::make('alamat')
+                    ->label('Alamat')
+                    ->maxLength(45)
+                    ->required(),
+
+                Forms\Components\TextInput::make('latitude')
+                    ->label('Latitude')
+                    ->numeric()
+                    ->required(),
+
+                Forms\Components\TextInput::make('longitude')
+                    ->label('Longitude')
+                    ->numeric()
+                    ->required(),
             ]);
     }
 
@@ -31,11 +65,12 @@ class KampusResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('nama')->label('Nama Kampus'),
+                Tables\Columns\TextColumn::make('alamat')->label('Alamat'),
+                Tables\Columns\TextColumn::make('latitude'),
+                Tables\Columns\TextColumn::make('longitude'),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

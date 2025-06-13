@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
+            $table->date('tanggal');
+            $table->time('mulai');
+            $table->time('akhir');
+            $table->string('keterangan', 100)->nullable();
+            $table->double('biaya');
+            $table->foreignId('kendaraan_id')->constrained('kendaraans')->onDelete('cascade');
+            $table->foreignId('areaparkir_id')->constrained('areaparkirs')->onDelete('cascade');
             $table->timestamps();
         });
     }

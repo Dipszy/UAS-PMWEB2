@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('kampuses', function (Blueprint $table) {
             $table->id();
+            $table->string('nama', 20);
+            $table->string('alamat', 45);
+            $table->double('latitude');
+            $table->double('longitude');
             $table->timestamps();
         });
     }

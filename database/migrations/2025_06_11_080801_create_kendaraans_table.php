@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('kendaraans', function (Blueprint $table) {
             $table->id();
+            $table->string('merk', 30);
+            $table->string('pemilik', 40);
+            $table->string('nopol', 20);
+            $table->integer('thn_beli');
+            $table->string('deskripsi', 200)->nullable();
+            $table->foreignId('jenis_kendaraan_id')->constrained('jenis')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -17,13 +17,42 @@ class TransaksiResource extends Resource
 {
     protected static ?string $model = Transaksi::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-receipt-percent';
+
+    public static function getModelLabel(): string
+    {
+        return 'Transaksi';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Transaksi';
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Transaksi';
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\DatePicker::make('tanggal')->required(),
+                Forms\Components\TimePicker::make('mulai')->required(),
+                Forms\Components\TimePicker::make('akhir')->required(),
+                Forms\Components\TextInput::make('biaya')->numeric()->required(),
+                Forms\Components\Textarea::make('keterangan')->maxLength(100),
+                Forms\Components\Select::make('kendaraan_id')
+                    ->label('Merk Kendaraan')
+                    ->relationship('kendaraan', 'merk')
+                    ->searchable()
+                    ->required(),
+                Forms\Components\Select::make('areaparkir_id')
+                    ->label('Area Parkir')
+                    ->relationship('areaparkir', 'nama')
+                    ->searchable()
+                    ->required(),
             ]);
     }
 
@@ -31,18 +60,21 @@ class TransaksiResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('tanggal')->date(),
+                Tables\Columns\TextColumn::make('mulai'),
+                Tables\Columns\TextColumn::make('akhir'),
+                Tables\Columns\TextColumn::make('biaya')->money('IDR'),
+                Tables\Columns\TextColumn::make('kendaraan.merk')->label('Kendaraan'),
+                Tables\Columns\TextColumn::make('areaparkir.nama')->label('Area Parkir'),
             ])
             ->filters([
-                //
+                // Optional filter
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
