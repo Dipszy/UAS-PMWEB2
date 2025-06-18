@@ -65,7 +65,7 @@ class ParkirResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama')->label('Nama Area'),
                 Tables\Columns\TextColumn::make('kapasitas'),
-                Tables\Columns\TextColumn::make('keterangan')->limit(30),
+                Tables\Columns\TextColumn::make('keterangan')->limit(80),
                 Tables\Columns\TextColumn::make('kampus.nama')->label('Kampus'),
             ])
             ->filters([])
