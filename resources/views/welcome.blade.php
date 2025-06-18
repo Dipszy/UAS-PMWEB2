@@ -70,7 +70,7 @@
         <p data-aos="fade-up" data-aos-delay="200">Solusi digital untuk pengelolaan area parkir di lingkungan kampus
           dengan fitur canggih</p>
         <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
-          <a href="#about" class="btn-get-started">Get Started</a>
+          <a href="{{ url('/admin') }}"class="btn-get-started">Get Started</a>
           <a href="https://youtu.be/28-bwjuXDaY?si=RiQa7edPBZoxJUU1"
             class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch
               Video</span></a>
