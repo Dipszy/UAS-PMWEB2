@@ -10,6 +10,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -47,11 +49,13 @@ class TransaksiResource extends Resource
                     ->label('Merk Kendaraan')
                     ->relationship('kendaraan', 'merk')
                     ->searchable()
+                    ->preload()
                     ->required(),
                 Forms\Components\Select::make('areaparkir_id')
                     ->label('Area Parkir')
                     ->relationship('areaparkir', 'nama')
                     ->searchable()
+                    ->preload()
                     ->required(),
             ]);
     }
@@ -72,10 +76,42 @@ class TransaksiResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
+    }
+
+    public static function canViewAny(): bool
+    {
+        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+    }
+
+    public static function canView(Model $record): bool
+    {
+        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+    }
+
+    public static function canCreate(): bool
+    {
+        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return Auth::check() && Auth::user()->role === 'admin'; // hanya admin boleh hapus
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
     }
 
     public static function getRelations(): array

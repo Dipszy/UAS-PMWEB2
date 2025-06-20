@@ -12,6 +12,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -23,17 +25,17 @@ class JenisResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return 'Jenis';
+        return 'Jenis Kendaraan';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'Jenis';
+        return 'Jenis Kendaraan';
     }
 
     public static function getNavigationLabel(): string
     {
-        return 'Jenis';
+        return 'Jenis Kendaraan';
     }
 
     public static function form(Form $form): Form
@@ -59,13 +61,39 @@ class JenisResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make()->label('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function canViewAny(): bool
+    {
+        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+    }
+
+    public static function canView(Model $record): bool
+    {
+        return Auth::check();
+    }
+
+    public static function canCreate(): bool
+    {
+        return Auth::check() && Auth::user()->role === 'admin';
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return Auth::check() && Auth::user()->role === 'admin';
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return Auth::check() && Auth::user()->role === 'admin';
     }
 
     public static function getRelations(): array
