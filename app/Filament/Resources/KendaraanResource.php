@@ -3,22 +3,21 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\KendaraanResource\Pages;
-use App\Filament\Resources\KendaraanResource\RelationManagers;
 use App\Models\Kendaraan;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class KendaraanResource extends Resource
 {
     protected static ?string $model = Kendaraan::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-truck';
 
     public static function getModelLabel(): string
@@ -33,7 +32,7 @@ class KendaraanResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return 'Kendaraan';
+        return 'Detail Kendaraan';
     }
 
     public static function form(Form $form): Form
@@ -58,6 +57,16 @@ class KendaraanResource extends Resource
             Forms\Components\Textarea::make('deskripsi')
                 ->label('Deskripsi Kendaraan'),
 
+            FileUpload::make('gambar')
+                ->label('Gambar Kendaraan')
+                ->image()
+                ->directory('kendaraan-images')
+                ->disk('public')
+                ->imagePreviewHeight('200')
+                ->previewable()
+                ->downloadable()
+                ->required(),
+
             Forms\Components\Select::make('jenis_kendaraan_id')
                 ->label('Jenis Kendaraan')
                 ->relationship('jenis', 'nama')
@@ -70,6 +79,7 @@ class KendaraanResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('gambar')->label('Foto')->disk('public')->circular(),
                 Tables\Columns\TextColumn::make('merk')->label('Merk'),
                 Tables\Columns\TextColumn::make('pemilik')->label('Pemilik'),
                 Tables\Columns\TextColumn::make('nopol')->label('No. Polisi'),
@@ -77,11 +87,12 @@ class KendaraanResource extends Resource
                 Tables\Columns\TextColumn::make('deskripsi')->label('Deskripsi')->limit(30),
                 Tables\Columns\TextColumn::make('jenis.nama')->label('Jenis Kendaraan'),
             ])
-            ->filters([
-                // Tambahkan filter jika perlu
-            ])
+            ->recordUrl(fn($record): ?string => null)
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -89,7 +100,6 @@ class KendaraanResource extends Resource
                 ]),
             ]);
     }
-
 
     public static function canViewAny(): bool
     {
@@ -103,17 +113,17 @@ class KendaraanResource extends Resource
 
     public static function canCreate(): bool
     {
-        return Auth::check() && Auth::user()->role === 'admin';
+        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
     }
 
     public static function canEdit(Model $record): bool
     {
-        return Auth::check() && Auth::user()->role === 'admin';
+        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
     }
 
     public static function canDelete(Model $record): bool
     {
-        return Auth::check() && Auth::user()->role === 'admin';
+        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
     }
 
     public static function shouldRegisterNavigation(): bool
@@ -121,12 +131,9 @@ class KendaraanResource extends Resource
         return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
     }
 
-
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

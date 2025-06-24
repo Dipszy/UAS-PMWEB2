@@ -6,7 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class kendaraan extends Model
 {
-    protected $fillable = ['merk', 'pemilik', 'nopol', 'thn_beli', 'deskripsi', 'jenis_kendaraan_id'];
+    protected $fillable = [
+        'merk',
+        'pemilik',
+        'nopol',
+        'thn_beli',
+        'deskripsi',
+        'gambar',
+        'jenis_kendaraan_id',
+    ];
 
     public function jenis()
     {

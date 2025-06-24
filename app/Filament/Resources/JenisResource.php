@@ -30,12 +30,12 @@ class JenisResource extends Resource
 
     public static function getPluralModelLabel(): string
     {
-        return 'Jenis';
+        return 'Jenis Kendaraan';
     }
 
     public static function getNavigationLabel(): string
     {
-        return 'Jenis';
+        return 'Jenis Kendaraan';
     }
 
     public static function form(Form $form): Form

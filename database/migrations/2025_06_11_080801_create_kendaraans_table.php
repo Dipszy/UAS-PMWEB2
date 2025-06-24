@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nopol', 20);
             $table->integer('thn_beli');
             $table->string('deskripsi', 200)->nullable();
+            $table->string('gambar')->nullable();
             $table->foreignId('jenis_kendaraan_id')->constrained('jenis')->onDelete('cascade');
             $table->timestamps();
         });
