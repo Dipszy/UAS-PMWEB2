@@ -44,17 +44,15 @@ class TransaksiResource extends Resource
                 Forms\Components\TimePicker::make('mulai')->required(),
                 Forms\Components\TimePicker::make('akhir')->required(),
                 Forms\Components\TextInput::make('biaya')->numeric()->required(),
-                Forms\Components\Textarea::make('keterangan')->maxLength(100),
+                Forms\Components\Textarea::make('keterangan')->maxLength(100)->columnSpanFull(),
                 Forms\Components\Select::make('kendaraan_id')
                     ->label('Merk Kendaraan')
                     ->relationship('kendaraan', 'merk')
-                    ->searchable()
                     ->preload()
                     ->required(),
                 Forms\Components\Select::make('areaparkir_id')
                     ->label('Area Parkir')
                     ->relationship('areaparkir', 'nama')
-                    ->searchable()
                     ->preload()
                     ->required(),
             ]);
@@ -64,15 +62,31 @@ class TransaksiResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('tanggal')->date(),
-                Tables\Columns\TextColumn::make('mulai'),
-                Tables\Columns\TextColumn::make('akhir'),
-                Tables\Columns\TextColumn::make('biaya')->money('IDR'),
-                Tables\Columns\TextColumn::make('kendaraan.merk')->label('Kendaraan'),
-                Tables\Columns\TextColumn::make('areaparkir.nama')->label('Area Parkir'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                Tables\Columns\TextColumn::make('tanggal')
+                    ->date()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('mulai')
+                    ->time()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('akhir')
+                    ->time()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('biaya')
+                    ->money('IDR')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('keterangan')
+                    ->limit(50)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('kendaraan.merk')
+                    ->label('Kendaraan')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('areaparkir.nama')
+                    ->label('Area Parkir')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
             ])
             ->filters([
                 // Optional filter

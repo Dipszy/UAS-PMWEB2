@@ -41,6 +41,17 @@ class KampusResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\FileUpload::make('gambar')
+                    ->label('Gambar Kampus')
+                    ->image()
+                    ->directory('kampus-images')
+                    ->disk('public')
+                    ->imagePreviewHeight('200')
+                    ->previewable()
+                    ->downloadable()
+                    ->required()
+                    ->columnSpanFull(),
+
                 Forms\Components\TextInput::make('nama')
                     ->label('Nama Kampus')
                     ->maxLength(20)
@@ -49,16 +60,6 @@ class KampusResource extends Resource
                 Forms\Components\TextInput::make('alamat')
                     ->label('Alamat')
                     ->maxLength(45)
-                    ->required(),
-
-                Forms\Components\FileUpload::make('gambar')
-                    ->label('Gambar Kampus')
-                    ->image()
-                    ->directory('Kampus-images')
-                    ->disk('public')
-                    ->imagePreviewHeight('200')
-                    ->previewable()
-                    ->downloadable()
                     ->required(),
 
                 Forms\Components\TextInput::make('latitude')
@@ -83,11 +84,18 @@ class KampusResource extends Resource
                     ->circular(),
                 Tables\Columns\TextColumn::make('nama')
                     ->label('Nama Kampus')
+                    ->searchable()
                     ->sortable()
                     ->toggleable(),
-                Tables\Columns\TextColumn::make('alamat')->label('Alamat'),
-                Tables\Columns\TextColumn::make('latitude'),
-                Tables\Columns\TextColumn::make('longitude'),
+                Tables\Columns\TextColumn::make('alamat')
+                    ->label('Alamat')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('latitude')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('longitude')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
@@ -95,6 +103,8 @@ class KampusResource extends Resource
             ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

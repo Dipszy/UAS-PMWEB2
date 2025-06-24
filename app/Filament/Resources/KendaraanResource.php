@@ -38,6 +38,17 @@ class KendaraanResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
+             Forms\Components\FileUpload::make('gambar')
+                ->label('Gambar Kendaraan')
+                ->image()
+                ->directory('kendaraan-images')
+                ->disk('public')
+                ->imagePreviewHeight('200')
+                ->previewable()
+                ->downloadable()
+                ->required()
+                ->columnSpanFull(),
+
             Forms\Components\TextInput::make('merk')
                 ->label('Merk Kendaraan')
                 ->required(),
@@ -57,16 +68,6 @@ class KendaraanResource extends Resource
             Forms\Components\Textarea::make('deskripsi')
                 ->label('Deskripsi Kendaraan'),
 
-            Forms\Components\FileUpload::make('gambar')
-                ->label('Gambar Kendaraan')
-                ->image()
-                ->directory('kendaraan-images')
-                ->disk('public')
-                ->imagePreviewHeight('200')
-                ->previewable()
-                ->downloadable()
-                ->required(),
-
             Forms\Components\Select::make('jenis_kendaraan_id')
                 ->label('Jenis Kendaraan')
                 ->relationship('jenis', 'nama')
@@ -79,13 +80,31 @@ class KendaraanResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('gambar')->label('Foto')->disk('public')->circular(),
-                Tables\Columns\TextColumn::make('merk')->label('Merk'),
-                Tables\Columns\TextColumn::make('pemilik')->label('Pemilik'),
-                Tables\Columns\TextColumn::make('nopol')->label('No. Polisi'),
-                Tables\Columns\TextColumn::make('thn_beli')->label('Tahun Beli'),
-                Tables\Columns\TextColumn::make('deskripsi')->label('Deskripsi')->limit(30),
-                Tables\Columns\TextColumn::make('jenis.nama')->label('Jenis Kendaraan'),
+                Tables\Columns\ImageColumn::make('gambar')
+                    ->label('Foto')
+                    ->disk('public')
+                    ->circular(),
+                Tables\Columns\TextColumn::make('merk')
+                    ->label('Merk')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('pemilik')
+                    ->label('Pemilik')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('nopol')
+                    ->label('No. Polisi')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('thn_beli')
+                    ->label('Tahun Beli')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('deskripsi')
+                    ->label('Deskripsi')
+                    ->limit(30)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('jenis.nama')
+                    ->label('Jenis Kendaraan')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),

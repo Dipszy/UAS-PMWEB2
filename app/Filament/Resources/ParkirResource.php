@@ -65,10 +65,21 @@ class ParkirResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama')->label('Nama Area'),
-                Tables\Columns\TextColumn::make('kapasitas'),
-                Tables\Columns\TextColumn::make('keterangan')->limit(80),
-                Tables\Columns\TextColumn::make('kampus.nama')->label('Kampus'),
+                Tables\Columns\TextColumn::make('nama')
+                    ->label('Nama Area')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('kapasitas')
+                    ->label('Kapasitas')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('keterangan')
+                    ->label('Keterangan')
+                    ->limit(80)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('kampus.nama')
+                    ->label('Kampus')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
