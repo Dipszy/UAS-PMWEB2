@@ -69,6 +69,9 @@ class ParkirResource extends Resource
                 Tables\Columns\TextColumn::make('kapasitas'),
                 Tables\Columns\TextColumn::make('keterangan')->limit(80),
                 Tables\Columns\TextColumn::make('kampus.nama')->label('Kampus'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->filters([])
             ->actions([
@@ -85,32 +88,32 @@ class ParkirResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+        return Auth::check() && in_array(Auth::user()->role, ['Admin', 'Pegawai']);
     }
 
     public static function canView(Model $record): bool
     {
-        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+        return Auth::check() && in_array(Auth::user()->role, ['Admin', 'Pegawai']);
     }
 
     public static function canCreate(): bool
     {
-        return Auth::check() && Auth::user()->role === 'admin';
+        return Auth::check() && Auth::user()->role === 'Admin';
     }
 
     public static function canEdit(Model $record): bool
     {
-        return Auth::check() && Auth::user()->role === 'admin';
+        return Auth::check() && Auth::user()->role === 'Admin';
     }
 
     public static function canDelete(Model $record): bool
     {
-        return Auth::check() && Auth::user()->role === 'admin';
+        return Auth::check() && Auth::user()->role === 'Admin';
     }
 
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+        return Auth::check() && in_array(Auth::user()->role, ['Admin', 'Pegawai']);
     }
 
     public static function getRelations(): array

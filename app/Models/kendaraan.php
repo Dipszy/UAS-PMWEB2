@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class kendaraan extends Model
 {
+    protected $table = 'kendaraans';
+
     protected $fillable = [
         'merk',
         'pemilik',
@@ -14,6 +16,10 @@ class kendaraan extends Model
         'deskripsi',
         'gambar',
         'jenis_kendaraan_id',
+    ];
+
+    protected $guarded = [
+        'id',
     ];
 
     public function jenis()

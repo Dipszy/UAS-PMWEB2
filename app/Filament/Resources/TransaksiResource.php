@@ -70,6 +70,9 @@ class TransaksiResource extends Resource
                 Tables\Columns\TextColumn::make('biaya')->money('IDR'),
                 Tables\Columns\TextColumn::make('kendaraan.merk')->label('Kendaraan'),
                 Tables\Columns\TextColumn::make('areaparkir.nama')->label('Area Parkir'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->filters([
                 // Optional filter
@@ -106,7 +109,7 @@ class TransaksiResource extends Resource
 
     public static function canDelete(Model $record): bool
     {
-        return Auth::check() && Auth::user()->role === 'admin';
+        return Auth::check() && Auth::user()->role === 'Admin';
     }
 
     public static function shouldRegisterNavigation(): bool

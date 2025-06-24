@@ -51,6 +51,16 @@ class KampusResource extends Resource
                     ->maxLength(45)
                     ->required(),
 
+                Forms\Components\FileUpload::make('gambar')
+                    ->label('Gambar Kampus')
+                    ->image()
+                    ->directory('Kampus-images')
+                    ->disk('public')
+                    ->imagePreviewHeight('200')
+                    ->previewable()
+                    ->downloadable()
+                    ->required(),
+
                 Forms\Components\TextInput::make('latitude')
                     ->label('Latitude')
                     ->numeric()
@@ -67,16 +77,24 @@ class KampusResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama')->label('Nama Kampus'),
+                Tables\Columns\ImageColumn::make('gambar')
+                    ->label('Foto')
+                    ->disk('public')
+                    ->circular(),
+                Tables\Columns\TextColumn::make('nama')
+                    ->label('Nama Kampus')
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('alamat')->label('Alamat'),
                 Tables\Columns\TextColumn::make('latitude'),
                 Tables\Columns\TextColumn::make('longitude'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -87,32 +105,32 @@ class KampusResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+        return Auth::check() && in_array(Auth::user()->role, ['Admin', 'Pegawai']);
     }
 
     public static function canView(Model $record): bool
     {
-        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+        return Auth::check() && in_array(Auth::user()->role, ['Admin', 'Pegawai']);
     }
 
     public static function canCreate(): bool
     {
-        return Auth::check() && Auth::user()->role === 'admin';
+        return Auth::check() && Auth::user()->role === 'Admin';
     }
 
     public static function canEdit(Model $record): bool
     {
-        return Auth::check() && Auth::user()->role === 'admin';
+        return Auth::check() && Auth::user()->role === 'Admin';
     }
 
     public static function canDelete(Model $record): bool
     {
-        return Auth::check() && Auth::user()->role === 'admin';
+        return Auth::check() && Auth::user()->role === 'Admin';
     }
 
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+        return Auth::check() && in_array(Auth::user()->role, ['Admin', 'Pegawai']);
     }
 
     public static function getRelations(): array

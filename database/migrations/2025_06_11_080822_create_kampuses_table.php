@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama', 20);
             $table->string('alamat', 45);
+            $table->string('gambar')->nullable();
             $table->double('latitude');
             $table->double('longitude');
             $table->timestamps();

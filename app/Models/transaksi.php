@@ -6,7 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class transaksi extends Model
 {
-    protected $fillable = ['tanggal', 'mulai', 'akhir', 'keterangan', 'biaya', 'kendaraan_id', 'areaparkir_id'];
+    protected $table = 'transaksis';
+
+    protected $fillable = [
+        'tanggal',
+        'mulai',
+        'akhir',
+        'keterangan',
+        'biaya',
+        'kendaraan_id',
+        'areaparkir_id'
+    ];
+
+    protected $guarded = [
+        'id',
+    ];
 
     public function kendaraan()
     {

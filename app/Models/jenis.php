@@ -7,7 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class jenis extends Model
 {
     protected $table = 'jenis';
-    protected $fillable = ['nama'];
+    protected $fillable = [
+        'nama'
+    ];
+
+    protected $guarded = [
+        'id',
+    ];
 
     public function kendaraans()
     {

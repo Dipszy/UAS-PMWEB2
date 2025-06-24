@@ -57,7 +57,7 @@ class KendaraanResource extends Resource
             Forms\Components\Textarea::make('deskripsi')
                 ->label('Deskripsi Kendaraan'),
 
-            FileUpload::make('gambar')
+            Forms\Components\FileUpload::make('gambar')
                 ->label('Gambar Kendaraan')
                 ->image()
                 ->directory('kendaraan-images')
@@ -86,6 +86,9 @@ class KendaraanResource extends Resource
                 Tables\Columns\TextColumn::make('thn_beli')->label('Tahun Beli'),
                 Tables\Columns\TextColumn::make('deskripsi')->label('Deskripsi')->limit(30),
                 Tables\Columns\TextColumn::make('jenis.nama')->label('Jenis Kendaraan'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->recordUrl(fn($record): ?string => null)
             ->filters([])
@@ -103,32 +106,32 @@ class KendaraanResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+        return Auth::check() && in_array(Auth::user()->role, ['Admin', 'Pegawai']);
     }
 
     public static function canView(Model $record): bool
     {
-        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+        return Auth::check() && in_array(Auth::user()->role, ['Admin', 'Pegawai']);
     }
 
     public static function canCreate(): bool
     {
-        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+        return Auth::check() && in_array(Auth::user()->role, ['Admin', 'Pegawai']);
     }
 
     public static function canEdit(Model $record): bool
     {
-        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+        return Auth::check() && in_array(Auth::user()->role, ['Admin', 'Pegawai']);
     }
 
     public static function canDelete(Model $record): bool
     {
-        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+        return Auth::check() && in_array(Auth::user()->role, ['Admin', 'Pegawai']);
     }
 
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::check() && in_array(Auth::user()->role, ['admin', 'pegawai']);
+        return Auth::check() && in_array(Auth::user()->role, ['Admin', 'Pegawai']);
     }
 
     public static function getRelations(): array

@@ -6,7 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class areaparkir extends Model
 {
-    protected $fillable = ['nama', 'kapasitas', 'keterangan', 'kampus_id'];
+
+     protected $table = 'areaparkirs';
+
+     protected $fillable = [
+        'nama',
+        'kapasitas',
+        'keterangan',
+        'kampus_id'
+    ];
+
+    protected $guarded = [
+        'id',
+    ];
 
     public function kampus()
     {
